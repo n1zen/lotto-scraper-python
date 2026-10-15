@@ -42,6 +42,11 @@ def get_table_data(page, game_name: str, start_date: str, end_date: str) -> list
             table_data.append(cells)
     return table_data
 
+def print_table_data(table_data: list, headers: list) -> None:
+    print("Headers:\n", headers)
+    print("Table Data:\n")
+    for row in table_data:
+        print(row)
 
 def run(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
@@ -60,15 +65,12 @@ def run(playwright: Playwright) -> None:
 
     # Get the Headers
     headers = page.get_by_role("columnheader").all_text_contents()
-    print("Headers:", headers)
 
     # Get the data from the table
     table_data = get_table_data(page, game_name, start_date, end_date)
 
-    print("Table Data:")
-    for row in table_data:
-        print(row)
-
+    # Print the data
+    print_table_data(table_data, headers)
     
     context.close()
     browser.close()
